@@ -44,7 +44,6 @@ class Upgrade {
     this.type = type;
     this.power = power; // default 1
   }
-
   buy(costId, levelId) {
     if (player.cars >= this.baseCost) {
       player.cars -= this.baseCost;
@@ -65,14 +64,14 @@ class Upgrade {
 }
 
 const upgrades = {
-  turbo: new Upgrade("Turbo Clicker", 10, 0, "click"),
-  engine: new Upgrade("Engine", 50, 0, "cps"),
-  wheels: new Upgrade("Wheels", 200, 0, "cps"),
-  exhaust: new Upgrade("Exhaust", 1000, 0, "cps"),
-  suspension: new Upgrade("Suspension", 5000, 0, "cps"),
-  brakes: new Upgrade("Brakes", 20000, 0, "cps"),
-  chassis: new Upgrade("Chassis", 100000, 0, "cps"),
-  nitro: new Upgrade("Nitro Boost", 1000000, 0, "cps")
+  turbo: new Upgrade("Turbo Clicker", 10, 0, "click", 1),
+  engine: new Upgrade("Engine", 50, 0, "cps", 2),
+  wheels: new Upgrade("Wheels", 200, 0, "cps", 5),
+  exhaust: new Upgrade("Exhaust", 1000, 0, "cps", 11),
+  suspension: new Upgrade("Suspension", 5000, 0, "cps", 23),
+  brakes: new Upgrade("Brakes", 20000, 0, "cps", 47),
+  chassis: new Upgrade("Chassis", 100000, 0, "cps", 95),
+  nitro: new Upgrade("Nitro Boost", 1000000, 0, "cps", 225)
 };
 
 // connect buttons direct met de class methods

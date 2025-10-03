@@ -1,20 +1,16 @@
-class Player{
-  name;
-  cars;
-  clickPower;
-  carsPerSecond;
-    constructor(name){
-      this.name = name;
-      this.cars = 0;
-      this.clickPower = 1;
-      this.carsPerSecond = 0;
-    }
-    click(){ 
-      this.cars += this.clickPower; 
-    }
+class Player {
+  constructor(name) {
+    this.name = name;
+    this.cars = 0;
+    this.clickPower = 1;
+    this.carsPerSecond = 0;
+  }
+  click() {
+    this.cars += this.clickPower;
+  }
 }
 
-function updateDisplay(){
+function updateDisplay() {
   carDisplay.textContent = player.cars;
   carStatsDisplay.textContent = player.cars;
   document.getElementById("cps").textContent = player.carsPerSecond;
@@ -40,20 +36,34 @@ clickBtn.addEventListener("click", () => {
   updateDisplay();
 });
 
-class Upgrade{
-  name;
-  baseCost;
-  level;
-  type;
-  power;
-  constructor(name, cost, lvl, type, power){
+class Upgrade {
+  constructor(name, cost, lvl, type, power = 1) {
     this.name = name;
     this.baseCost = cost;
     this.level = lvl;
     this.type = type;
-    this.power = power;
+    this.power = power; // default 1
+  }
+
+  buy(costId, levelId) {
+    if (player.cars >= this.baseCost) {
+      player.cars -= this.baseCost;
+      this.level++;
+
+      if (this.type === "click") {
+        player.clickPower += this.power;
+      } else {
+        player.carsPerSecond += this.power;
+      }
+
+      this.baseCost = Math.floor(this.baseCost * 1.5);
+      document.getElementById(costId).textContent = this.baseCost;
+      document.getElementById(levelId).textContent = this.level;
+      updateDisplay();
+    }
   }
 }
+
 const upgrades = {
   turbo: new Upgrade("Turbo Clicker", 10, 0, "click"),
   engine: new Upgrade("Engine", 50, 0, "cps"),
@@ -64,29 +74,16 @@ const upgrades = {
   chassis: new Upgrade("Chassis", 100000, 0, "cps"),
   nitro: new Upgrade("Nitro Boost", 1000000, 0, "cps")
 };
-function buyUpgrade(upgrade, costId, levelId) {
-  if (player.cars >= upgrade.baseCost) {
-    player.cars -= upgrade.baseCost;
-    upgrade.level++;
-    if (upgrade.type === "click") {
-      player.clickPower++;
-    } else {
-      player.carsPerSecond += upgrade.level;
-    }
-    upgrade.baseCost = Math.floor(upgrade.baseCost * 1.5);
-    document.getElementById(costId).textContent = upgrade.baseCost;
-    document.getElementById(levelId).textContent = upgrade.level;
-    updateDisplay();
-  }
-}
-document.getElementById("turboBtn").addEventListener("click", () => buyUpgrade(upgrades.turbo, "turboCost", "turboLevel"));
-document.getElementById("engineBtn").addEventListener("click", () => buyUpgrade(upgrades.engine, "engineCost", "engineLevel"));
-document.getElementById("wheelsBtn").addEventListener("click", () => buyUpgrade(upgrades.wheels, "wheelsCost", "wheelsLevel"));
-document.getElementById("exhaustBtn").addEventListener("click", () => buyUpgrade(upgrades.exhaust, "exhaustCost", "exhaustLevel"));
-document.getElementById("suspensionBtn").addEventListener("click", () => buyUpgrade(upgrades.suspension, "suspensionCost", "suspensionLevel"));
-document.getElementById("brakesBtn").addEventListener("click", () => buyUpgrade(upgrades.brakes, "brakesCost", "brakesLevel"));
-document.getElementById("chassisBtn").addEventListener("click", () => buyUpgrade(upgrades.chassis, "chassisCost", "chassisLevel"));
-document.getElementById("nitroBtn").addEventListener("click", () => buyUpgrade(upgrades.nitro, "nitroCost", "nitroLevel"));
+
+// connect buttons direct met de class methods
+document.getElementById("turboBtn").addEventListener("click", () => upgrades.turbo.buy("turboCost", "turboLevel"));
+document.getElementById("engineBtn").addEventListener("click", () => upgrades.engine.buy("engineCost", "engineLevel"));
+document.getElementById("wheelsBtn").addEventListener("click", () => upgrades.wheels.buy("wheelsCost", "wheelsLevel"));
+document.getElementById("exhaustBtn").addEventListener("click", () => upgrades.exhaust.buy("exhaustCost", "exhaustLevel"));
+document.getElementById("suspensionBtn").addEventListener("click", () => upgrades.suspension.buy("suspensionCost", "suspensionLevel"));
+document.getElementById("brakesBtn").addEventListener("click", () => upgrades.brakes.buy("brakesCost", "brakesLevel"));
+document.getElementById("chassisBtn").addEventListener("click", () => upgrades.chassis.buy("chassisCost", "chassisLevel"));
+document.getElementById("nitroBtn").addEventListener("click", () => upgrades.nitro.buy("nitroCost", "nitroLevel"));
 
 setInterval(() => {
   player.cars += player.carsPerSecond;

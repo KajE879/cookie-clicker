@@ -41,6 +41,13 @@ main{
     .statsSection{
         background-color: rgb(50, 0, 0);
         width: 50%;
+        .stats{
+            border: 1px solid white;
+            padding: 10px;
+            width: 25%;
+            border-radius: 20px;
+            margin: 20px;
+        }
     }
     .upgradeSection{
         background-color: rgb(50 ,50 ,50);

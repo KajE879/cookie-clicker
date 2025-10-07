@@ -1,4 +1,8 @@
 class Player {
+  name;
+  cars;
+  clickPower;
+  carsPerSecond;
   constructor(name) {
     this.name = name;
     this.cars = 0;
@@ -10,12 +14,28 @@ class Player {
   }
 }
 
-function updateDisplay() {
-  carDisplay.textContent = player.cars;
-  carStatsDisplay.textContent = player.cars;
-  document.getElementById("cps").textContent = player.carsPerSecond;
-  document.getElementById("cp").textContent = player.clickPower;
 
+function formatNumber(num) {
+  const suffixes = ["", "K", "M", "B", "T", "Q", "Qi", "S", "Sp", "O"];
+  let i = 0;
+  while (num >= 1000 && i < suffixes.length - 1) {
+    num /= 1000;
+    i++;
+  }
+  if (i === 0) {
+    return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  } else {
+    return num.toFixed(2).replace(".", ",") + suffixes[i];
+  }
+}
+
+
+
+function updateDisplay() {
+  carDisplay.textContent = formatNumber(player.cars);
+  carStatsDisplay.textContent = formatNumber(player.cars);
+  document.getElementById("cps").textContent = formatNumber(player.carsPerSecond);
+  document.getElementById("cp").textContent = formatNumber(player.clickPower);
   for (const key in upgrades) {
     const upgrade = upgrades[key];
     const btn = document.getElementById(key + "Btn");
@@ -37,44 +57,48 @@ clickBtn.addEventListener("click", () => {
 });
 
 class Upgrade {
+  name;
+  baseCost;
+  level;
+  type;
+  power;
   constructor(name, cost, lvl, type, power = 1) {
     this.name = name;
     this.baseCost = cost;
     this.level = lvl;
     this.type = type;
-    this.power = power; // default 1
+    this.power = power;
   }
   buy(costId, levelId) {
     if (player.cars >= this.baseCost) {
       player.cars -= this.baseCost;
       this.level++;
-
       if (this.type === "click") {
         player.clickPower += this.power;
       } else {
         player.carsPerSecond += this.power;
       }
 
-      this.baseCost = Math.floor(this.baseCost * 1.5);
-      document.getElementById(costId).textContent = this.baseCost;
-      document.getElementById(levelId).textContent = this.level;
+      this.baseCost = Math.floor(this.baseCost * 1.35);
+      this.power = Math.floor(this.power * 1.15);
+      document.getElementById(costId).textContent = formatNumber(this.baseCost);
+      document.getElementById(levelId).textContent = formatNumber(this.level);
       updateDisplay();
     }
   }
 }
 
 const upgrades = {
-  turbo: new Upgrade("Turbo Clicker", 10, 0, "click", 1),
-  engine: new Upgrade("Engine", 50, 0, "cps", 2),
-  wheels: new Upgrade("Wheels", 200, 0, "cps", 5),
-  exhaust: new Upgrade("Exhaust", 1000, 0, "cps", 11),
-  suspension: new Upgrade("Suspension", 5000, 0, "cps", 23),
-  brakes: new Upgrade("Brakes", 20000, 0, "cps", 47),
-  chassis: new Upgrade("Chassis", 100000, 0, "cps", 95),
-  nitro: new Upgrade("Nitro Boost", 1000000, 0, "cps", 225)
+  turbo: new Upgrade("Turbo Clicker", 15, 0, "click", 1),
+  engine: new Upgrade("Engine", 100, 0, "cps", 3),
+  wheels: new Upgrade("Wheels", 600, 0, "cps", 8),
+  exhaust: new Upgrade("Exhaust", 3500, 0, "cps", 20),
+  suspension: new Upgrade("Suspension", 20000, 0, "cps", 50),
+  brakes: new Upgrade("Brakes", 100000, 0, "cps", 125),
+  chassis: new Upgrade("Chassis", 500000, 0, "cps", 300),
+  nitro: new Upgrade("Nitro Boost", 2500000, 0, "cps", 700)
 };
 
-// connect buttons direct met de class methods
 document.getElementById("turboBtn").addEventListener("click", () => upgrades.turbo.buy("turboCost", "turboLevel"));
 document.getElementById("engineBtn").addEventListener("click", () => upgrades.engine.buy("engineCost", "engineLevel"));
 document.getElementById("wheelsBtn").addEventListener("click", () => upgrades.wheels.buy("wheelsCost", "wheelsLevel"));

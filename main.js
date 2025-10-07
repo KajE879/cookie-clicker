@@ -15,21 +15,6 @@ class Player {
 }
 
 
-function formatNumber(num) {
-  const suffixes = ["", "K", "M", "B", "T", "Q", "Qi", "S", "Sp", "O"];
-  let i = 0;
-  while (num >= 1000 && i < suffixes.length - 1) {
-    num /= 1000;
-    i++;
-  }
-  if (i === 0) {
-    return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  } else {
-    return num.toFixed(2).replace(".", ",") + suffixes[i];
-  }
-}
-
-
 
 function updateDisplay() {
   carDisplay.textContent = formatNumber(player.cars);

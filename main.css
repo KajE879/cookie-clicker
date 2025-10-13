@@ -34,7 +34,7 @@ main{
             }
             .scaled{
                 transform: scale(1.15);
-                transition: transform 0.15s ease,
+                transition: transform 0.15s ease;
             }
         }
     }
@@ -56,8 +56,28 @@ main{
         align-items: center;
         text-align: center;
         flex-direction: column;
+        .specials{
+            gap: 5px;
+            padding: 15px;
+            border-radius: 20px;
+            border: 1px solid white;
+            display: flex;
+            flex-direction: row;
+            width: 80%;
+            button{
+                transition: transform 0.2s ease, box-shadow 0.3s ease;
+                border-radius: 5px;
+                height: 40px;
+                width: 40px;
+                &:hover{
+                    transform: scale(1.05);
+                }
+                &:active{
+                    transform: scale(0.95);
+                }
+            }
+        }
         .upgrades{
-            margin: 50px;
             padding: 20px;
             border: 1px solid white;
             border-radius: 20px;

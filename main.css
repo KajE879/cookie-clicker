@@ -1,108 +1,197 @@
-body{
+body {
     margin: 0;
     padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
-main{
+main {
     display: flex;
-    flex-direction: row;
     height: 100vh;
-    color: white;
-    .carSection{
-        background-color: rgb(50 ,50 ,50);
-        width: 30%;
-        display: flex;
-        align-items: center;
-        text-align: center;
-        flex-direction: column;
-        .clickerSection{
-            margin-top: 250px;
-            button{
-                padding: 60px;
-                font-size: 2rem;
-                border: none;
-                border-radius: 50%;
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-                cursor: pointer;
-                transition: transform 0.2s ease, box-shadow 0.3s ease;
-                &:hover{
-                    transform: scale(1.05);
-                }
-                &:active{
-                    transform: scale(0.95);
-                }
-            }
-            .scaled{
-                transform: scale(1.15);
-                transition: transform 0.15s ease;
-            }
-        }
-    }
-    .statsSection{
-        background-color: rgb(50, 0, 0);
-        width: 50%;
-        .stats{
-            border: 1px solid white;
-            padding: 10px;
-            width: 25%;
-            border-radius: 20px;
-            margin: 20px;
-        }
-    }
-    .upgradeSection{
-        background-color: rgb(50 ,50 ,50);
-        width: 20%;
-        display: flex;
-        align-items: center;
-        text-align: center;
-        flex-direction: column;
-        .specials{
-            gap: 5px;
-            padding: 15px;
-            border-radius: 20px;
-            border: 1px solid white;
-            display: flex;
-            flex-direction: row;
-            width: 80%;
-            button{
-                transition: transform 0.2s ease, box-shadow 0.3s ease;
-                border-radius: 5px;
-                height: 40px;
-                width: 40px;
-                &:hover{
-                    transform: scale(1.05);
-                }
-                &:active{
-                    transform: scale(0.95);
-                }
-            }
-        }
-        .upgrades{
-            padding: 20px;
-            border: 1px solid white;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 80%;
-            button{
-                border: none;
-                height: 15%;
-                border-radius: 15%;
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-                cursor: pointer;
-                transition: transform 0.2s ease, box-shadow 0.3s ease;
-                &:hover{
-                    transform: scale(1.05);
-                }
-                &:active{
-                    transform: scale(0.95);
-                }
-            }
-        }
-    }
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
-.upgrade-available{
-    background-color: #7eff7e;
+/* Clicker Section */
+.carSection {
+    width: 25%;
+    background-color: var(--car-section-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+.clickerSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.clickerSection button {
+    width: 250px;
+    height: 250px;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background: var(--btn);
+    color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: all 0.2s ease;
+}
+
+.clickerSection img {
+    width: 200px;
+}
+
+.clickerSection button:hover { transform: scale(1.1); }
+.clickerSection button:active { transform: scale(0.95); }
+
+/* Stats Section */
+.statsSection {
+    width: 40%;
+    background-color: var(--stats-section-bg);
+    border-radius: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.themes {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.themes button {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.themes .darkBtn {
+    background: linear-gradient(135deg, #434343 0%, #000000 100%);
+    color: white;
+}
+
+.themes .lightBtn {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: #111111;
+}
+
+.themes .solarBtn {
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    color: #2a1f00;
+}
+
+.themes button:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+
+/* Upgrade Section */
+.upgradeSection {
+    width: 30%;
+    background-color: var(--upgrade-section-bg);
+    border-radius: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.specials {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.specials button {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(145deg, #4a4a4a, #3a3a3a);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: all 0.2s ease;
+}
+
+.specials button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(145deg, #5a5a5a, #4a4a4a);
+}
+
+.upgrades {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.upgrades button {
+    width: 100%;
+    padding: 8px;
+    border-radius: 12px;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    cursor: pointer;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: all 0.2s ease;
+}
+
+.upgrades button:hover {
+    background: rgba(255,255,255,0.15);
+    transform: scale(1.02);
+}
+
+.upgrade-available {
+    background: linear-gradient(145deg, #7eff7e, #00930f) !important;
+    color: black;
+}
+
+/* Themes */
+:root {
+    /* Dark (default) */
+    --btn: linear-gradient(135deg, #434343 0%, #000000 100%);
+    --bg-color: #1a1a1a;
+    --car-section-bg: #2c2c2c;
+    --stats-section-bg: #3a0000;
+    --upgrade-section-bg: #2c2c2c;
+    --text-color: white;
+}
+
+/* Light Theme */
+body.light-theme {
+    --btn: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --bg-color: #f0f0f0;
+    --car-section-bg: #ffffff;
+    --stats-section-bg: #ffeded;
+    --upgrade-section-bg: #f5f5f5;
+    --text-color: #111111;
+}
+
+/* Solar Theme */
+body.solar-theme {
+    --btn: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    --bg-color: #fff8e1;
+    --car-section-bg: #ffeb99;
+    --stats-section-bg: #ffd966;
+    --upgrade-section-bg: #ffe680;
+    --text-color: #2a1f00;
 }

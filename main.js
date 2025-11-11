@@ -1,4 +1,4 @@
-// localStorage.clear()
+localStorage.clear()
 
 // Player
 class Player {
@@ -28,16 +28,13 @@ class Upgrade {
         if (player.cars >= this.baseCost) {
             player.cars -= this.baseCost;
             this.level++;
-
             if (this.type === "click") {
                 player.clickPower += this.power;
             } else {
                 player.carsPerSecond += this.power;
             }
-
             this.baseCost = Math.floor(this.baseCost * 1.35);
             this.power = Math.floor(this.power * 1.15);
-
             document.getElementById(costId).innerHTML = this.baseCost;
             document.getElementById(levelId).innerHTML = this.level;
             updateDisplay();
@@ -46,6 +43,7 @@ class Upgrade {
     }
 }
 
+// Get Id's
 let player = new Player("Kaj");
 let carDisplay = document.getElementById("carsMain");
 let carStatsDisplay = document.getElementById("carsStats");
@@ -79,13 +77,27 @@ for (let upgradeName of upgradeBtn) {
     });
 }
 
+// Car image
+function updateCarImage() {
+    const carImg = document.getElementById("carImage");
+    if (!carImg) return;
+    if (upgrades.nitro.level > 0) carImg.src = "images/Nitro.png";
+    else if (upgrades.chassis.level > 0) carImg.src = "images/Chassis.png";
+    else if (upgrades.brakes.level > 0) carImg.src = "images/Brakes.png";
+    else if (upgrades.suspension.level > 0) carImg.src = "images/Suspension.png";
+    else if (upgrades.exhaust.level > 0) carImg.src = "images/Exhaust.png";
+    else if (upgrades.wheels.level > 0) carImg.src = "images/Wheels.png";
+    else if (upgrades.engine.level > 0) carImg.src = "images/Engine.png";
+    else if (upgrades.turbo.level > 0) carImg.src = "images/Turbo.png";
+    else carImg.src = "images/Default.png";
+}
+
 // Display Update
 function updateDisplay() {
     carDisplay.innerHTML = player.cars.toLocaleString();
     carStatsDisplay.innerHTML = player.cars.toLocaleString();
     document.getElementById("cps").innerHTML = player.carsPerSecond.toLocaleString();
     document.getElementById("cp").innerHTML = player.clickPower.toLocaleString();
-
     for (let upgradeName in upgrades) {
         let upgrade = upgrades[upgradeName];
         document.getElementById(upgradeName + "Cost").innerHTML = upgrade.baseCost.toLocaleString();
@@ -97,6 +109,7 @@ function updateDisplay() {
             btn.classList.remove("upgrade-available");
         }
     }
+    updateCarImage();
 }
 
 // Game Save
@@ -145,5 +158,35 @@ setInterval(function() {
     saveGame();
     updateDisplay();
 }, 1000);
+
+// ----- Themes -----
+const lightBtn = document.getElementById("lightBtn");
+const darkBtn = document.getElementById("darkBtn");
+const solarBtn = document.getElementById("solarBtn");
+
+lightBtn.addEventListener("click", () => {
+    document.body.classList.add("light-theme");
+    document.body.classList.remove("dark-theme","solar-theme");
+    localStorage.setItem("theme","light");
+});
+
+darkBtn.addEventListener("click", () => {
+    document.body.classList.remove("light-theme","solar-theme");
+    document.body.classList.add("dark-theme");
+    localStorage.setItem("theme","dark");
+});
+
+solarBtn.addEventListener("click", () => {
+    document.body.classList.add("solar-theme");
+    document.body.classList.remove("light-theme","dark-theme");
+    localStorage.setItem("theme","solar");
+});
+
+window.addEventListener("load", () => {
+    const savedTheme = localStorage.getItem("theme");
+    if(savedTheme==="light") document.body.classList.add("light-theme");
+    else if(savedTheme==="dark") document.body.classList.add("dark-theme");
+    else if(savedTheme==="solar") document.body.classList.add("solar-theme");
+});
 
 updateDisplay();

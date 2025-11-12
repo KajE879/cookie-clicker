@@ -161,7 +161,7 @@ main {
 }
 
 .upgrade-available {
-    background: linear-gradient(145deg, #7eff7e, #00930f) !important;
+    background: var(--btn) !important;
     color: black;
 }
 

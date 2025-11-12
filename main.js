@@ -159,7 +159,7 @@ setInterval(function() {
     updateDisplay();
 }, 1000);
 
-// ----- Themes -----
+// Themes
 const lightBtn = document.getElementById("lightBtn");
 const darkBtn = document.getElementById("darkBtn");
 const solarBtn = document.getElementById("solarBtn");

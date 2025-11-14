@@ -23,7 +23,7 @@ class Upgrade {
         this.type = type;
         this.power = power;
     }
-
+    // Buy Upgrade
     Buy(costId, levelId) {
         if (player.cars >= this.baseCost) {
             player.cars -= this.baseCost;
@@ -49,7 +49,7 @@ let carDisplay = document.getElementById("carsMain");
 let carStatsDisplay = document.getElementById("carsStats");
 let clickBtn = document.getElementById("clickBtn");
 
-// On Button Click
+// On Car Button Click
 clickBtn.addEventListener("click", function() {
     player.click();
     updateDisplay();
@@ -77,6 +77,48 @@ for (let upgradeName of upgradeBtn) {
     });
 }
 
+// Special Upgrade
+class Special {
+    constructor(name, cost, requiredUpgrade, requiredLevel) {
+        this.name = name;
+        this.cost = cost;
+        this.requiredUpgrade = requiredUpgrade;
+        this.requiredLevel = requiredLevel;
+        this.bought = false;
+    }
+    // Buy Special Upgrade
+    use() {
+        if (this.bought) return;
+        if (player.cars < this.cost) return;
+        if (upgrades[this.requiredUpgrade].level < this.requiredLevel) return;
+
+        player.cars -= this.cost;
+
+        player.clickPower *= 2;
+        this.bought = true;
+
+        updateDisplay();
+        saveGame();
+    }
+}
+
+// All Special Upgrades
+const specials = {
+    s1: new Special("Speed Burst", 1000, "turbo", 10, "cp"),
+    s2: new Special("Engine Fury", 2000, "engine", 10, "cps"),
+    s3: new Special("Wheel Spin", 3000, "wheels", 10, "cps"),
+    s4: new Special("Exhaust Blast", 4000, "exhaust", 10, "cps"),
+    s5: new Special("Suspension Shock", 5000, "suspension", 10, "cp")
+};
+
+// Special Upgrade Button To Buy
+for (let i = 1; i <= 5; i++) {
+    document.getElementById(`special${i}`)
+        .addEventListener("click", function () {
+            specials[`s${i}`].use();
+        });
+}
+
 // Car image
 function updateCarImage() {
     const carImg = document.getElementById("carImage");
@@ -98,15 +140,31 @@ function updateDisplay() {
     carStatsDisplay.innerHTML = player.cars.toLocaleString();
     document.getElementById("cps").innerHTML = player.carsPerSecond.toLocaleString();
     document.getElementById("cp").innerHTML = player.clickPower.toLocaleString();
+    // Upgrades
     for (let upgradeName in upgrades) {
         let upgrade = upgrades[upgradeName];
         document.getElementById(upgradeName + "Cost").innerHTML = upgrade.baseCost.toLocaleString();
         document.getElementById(upgradeName + "Level").innerHTML = upgrade.level.toLocaleString();
         let btn = document.getElementById(upgradeName + "Btn");
+
         if (player.cars >= upgrade.baseCost) {
             btn.classList.add("upgrade-available");
         } else {
             btn.classList.remove("upgrade-available");
+        }
+    }
+    // special Upgrades
+    for (let i = 1; i <= 5; i++) {
+        const s = specials[`s${i}`];
+        const el = document.getElementById(`special${i}`);
+        const canBuy =
+            !s.bought &&
+            player.cars >= s.cost &&
+            upgrades[s.requiredUpgrade].level >= s.requiredLevel;
+        if (canBuy) {
+            el.classList.add("upgrade-available");
+        } else {
+            el.classList.remove("upgrade-available");
         }
     }
     updateCarImage();

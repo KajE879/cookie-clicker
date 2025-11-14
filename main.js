@@ -79,24 +79,27 @@ for (let upgradeName of upgradeBtn) {
 
 // Special Upgrade
 class Special {
-    constructor(name, cost, requiredUpgrade, requiredLevel) {
+    constructor(name, cost, requiredUpgrade, requiredLevel, type) {
         this.name = name;
         this.cost = cost;
         this.requiredUpgrade = requiredUpgrade;
         this.requiredLevel = requiredLevel;
+        this.type = type; // "cp", "cps", or "both"
         this.bought = false;
     }
-    // Buy Special Upgrade
+
     use() {
         if (this.bought) return;
         if (player.cars < this.cost) return;
         if (upgrades[this.requiredUpgrade].level < this.requiredLevel) return;
-
         player.cars -= this.cost;
-
-        player.clickPower *= 2;
+        if (this.type === "cp") player.clickPower *= 2;
+        if (this.type === "cps") player.carsPerSecond *= 1.5;
+        if (this.type === "both") {
+            player.clickPower *= 2;
+            player.carsPerSecond *= 1.5;
+        }
         this.bought = true;
-
         updateDisplay();
         saveGame();
     }
@@ -106,9 +109,9 @@ class Special {
 const specials = {
     s1: new Special("Speed Burst", 1000, "turbo", 10, "cp"),
     s2: new Special("Engine Fury", 2000, "engine", 10, "cps"),
-    s3: new Special("Wheel Spin", 3000, "wheels", 10, "cps"),
-    s4: new Special("Exhaust Blast", 4000, "exhaust", 10, "cps"),
-    s5: new Special("Suspension Shock", 5000, "suspension", 10, "cp")
+    s3: new Special("Exhaust Blast", 3000, "exhaust", 10, "cps"),
+    s4: new Special("Suspension Shock", 4000, "suspension", 10, "both"),
+    s5: new Special("Brake Boost", 5000, "brakes", 10, "cp")
 };
 
 // Special Upgrade Button To Buy
@@ -178,8 +181,10 @@ function saveGame() {
             clickPower: player.clickPower,
             carsPerSecond: player.carsPerSecond
         },
-        upgrades: {}
+        upgrades: {},
+        specials: {}
     };
+    // Save Upgrades
     for (let key in upgrades) {
         data.upgrades[key] = {
             baseCost: upgrades[key].baseCost,
@@ -187,8 +192,15 @@ function saveGame() {
             power: upgrades[key].power
         };
     }
+    // Save Special Upgrades
+    for (let key in specials) {
+        data.specials[key] = {
+            bought: specials[key].bought
+        };
+    }
     localStorage.setItem("save", JSON.stringify(data));
 }
+
 
 // Game Load
 function loadGame() {
@@ -197,6 +209,7 @@ function loadGame() {
     player.cars = saved.player.cars;
     player.clickPower = saved.player.clickPower;
     player.carsPerSecond = saved.player.carsPerSecond;
+    // Load Upgrades
     for (let key in saved.upgrades) {
         if (upgrades[key]) {
             upgrades[key].baseCost = saved.upgrades[key].baseCost;
@@ -204,8 +217,15 @@ function loadGame() {
             upgrades[key].power = saved.upgrades[key].power;
         }
     }
+    // Load Special Upgrades
+    for (let key in saved.specials) {
+        if (specials[key]) {
+            specials[key].bought = saved.specials[key].bought;
+        }
+    }
     updateDisplay();
 }
+
 
 // Load Game On Start-Up
 window.addEventListener("load", loadGame);

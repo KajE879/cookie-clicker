@@ -8,7 +8,7 @@ class Player {
         this.clickPower = 1;
         this.carsPerSecond = 0;
     }
-
+    // Click t
     click() {
         this.cars += this.clickPower;
     }
@@ -242,24 +242,28 @@ const lightBtn = document.getElementById("lightBtn");
 const darkBtn = document.getElementById("darkBtn");
 const solarBtn = document.getElementById("solarBtn");
 
+// Light Theme
 lightBtn.addEventListener("click", () => {
     document.body.classList.add("light-theme");
     document.body.classList.remove("dark-theme","solar-theme");
     localStorage.setItem("theme","light");
 });
 
+// Dark Theme
 darkBtn.addEventListener("click", () => {
     document.body.classList.remove("light-theme","solar-theme");
     document.body.classList.add("dark-theme");
     localStorage.setItem("theme","dark");
 });
 
+// Solar Theme
 solarBtn.addEventListener("click", () => {
     document.body.classList.add("solar-theme");
     document.body.classList.remove("light-theme","dark-theme");
     localStorage.setItem("theme","solar");
 });
 
+// Load Theme
 window.addEventListener("load", () => {
     const savedTheme = localStorage.getItem("theme");
     if(savedTheme==="light") document.body.classList.add("light-theme");
